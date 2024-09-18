@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "streamlit-template"
+version = "0.1.0"
+description = ""
+authors = ["Valtair Junior <valtair.developer@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+streamlit = "^1.38.0"
+plotly = "^5.24.1"
+pandas = "^2.2.2"
+sqlalchemy = "^2.0.35"
+pydantic-settings = "^2.5.2"
+bcrypt = "^4.2.0"
+psycopg2-binary = "^2.9.9"
+python-magic = "^0.4.27"
+pydantic = {extras = ["email"], version = "^2.9.2"}
+
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.12.0"
+black = "^23.1.0"
+taskipy = "^1.10.3"
+pre-commit = "^3.1.1"
+faker = "^28.4.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.taskipy.tasks]
+run = "streamlit run src/Home.py"
+lint = "black --check --diff . && isort --check --diff ."
+docs = "mkdocs serve"
+test = "pytest -s -x --cov=app -vv"
+test_pdb = "pytest -s -x --pdb"
+post_test = "coverage html"
+cov = "google-chrome htmlcov/index.html"
+rev = "read -p 'nome da revision: ' nome && alembic revision --autogenerate -m $nome "
+up = "alembic upgrade head"
+down = "alembic downgrade base"
+export = "poetry export > requirements.txt --without-hashes"
+install_req = "cat requirements.txt | grep -E '^[^# ]' | cut -d ';' -f1  | xargs -n 1 poetry add"
+install_up_req = "cat requirements.txt | grep -E '^[^# ]' | cut -d '=' -f1  | xargs -n 1 poetry add"
+pc = "pre-commit run --all-files"
+pc_update = "pre-commit autoupdate"
+init_db = "docker start postgres"
